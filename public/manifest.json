@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "lastUpdated": "2026-11-06T00:00:00Z",
+  "notes": [
+    {
+      "id": "rasbhari-did-bangla",
+      "title": "Rasbhari — Dissociative Identity Disorder (বাংলা)",
+      "slug": "rasbhari-did-bangla",
+      "language": "bn",
+      "movie": "Rasbhari",
+      "releaseYear": 2020,
+      "specialties": ["Psychiatry"],
+      "topics": ["DID", "Dissociation", "Identity"],
+      "diagnoses": ["Dissociative Identity Disorder"],
+      "difficulty": "Intermediate",
+      "description": "শানু বানসাল / 'রসভরি' চরিত্রের DID portrayal—MBBS Psychiatry ভিত্তিক ব্যাখ্যা।",
+      "fileName": "Rasbhari_DID_Medical_Notes_Bangla.html",
+      "tags": ["Psychological Thriller", "Medical Loopholes"],
+      "readingTime": 12,
+      "hasFeynman": true,
+      "hasQuiz": false,
+      "published": true
+    },
+    {
+      "id": "rasbhari-did-english",
+      "title": "Rasbhari — Dissociative Identity Disorder (English)",
+      "slug": "rasbhari-did-english",
+      "language": "en",
+      "movie": "Rasbhari",
+      "releaseYear": 2020,
+      "specialties": ["Psychiatry"],
+      "topics": ["DID", "Dissociation", "Identity"],
+      "diagnoses": ["Dissociative Identity Disorder"],
+      "difficulty": "Intermediate",
+      "description": "A clinically cautious MBBS Psychiatry review of Shanoo Bansal / 'Rasbhari'.",
+      "fileName": "Rasbhari_DID_Medical_Notes_English.html",
+      "tags": ["Psychological Thriller", "Medical Loopholes"],
+      "readingTime": 12,
+      "hasFeynman": true,
+      "hasQuiz": false,
+      "published": true
+    }
+  ]
+}
