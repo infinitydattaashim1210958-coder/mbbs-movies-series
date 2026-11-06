@@ -1,0 +1,48 @@
+"use client";
+import { useEffect, useState } from "react";
+
+export default function SecureNoteViewer({ htmlUrl }: { htmlUrl: string }) {
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let objectUrl: string | null = null;
+    const loadNote = async () => {
+      try {
+        const res = await fetch(htmlUrl);
+        if (!res.ok) throw new Error("Failed to fetch");
+        const htmlText = await res.text();
+        const blob = new Blob([htmlText], { type: "text/html" });
+        objectUrl = URL.createObjectURL(blob);
+        setBlobUrl(objectUrl);
+      } catch (err) {
+        setError("Unable to load this medical note. Please check your connection.");
+      }
+    };
+    loadNote();
+    return () => { if (objectUrl) URL.revokeObjectURL(objectUrl); };
+  }, [htmlUrl]);
+
+  if (error) return (
+    <div className="p-8 bg-surface-elevated border border-secondary/50 rounded-lg text-center text-secondary">
+      {error}
+    </div>
+  );
+  
+  if (!blobUrl) return (
+    <div className="animate-pulse h-[80vh] bg-surface-elevated rounded-lg flex items-center justify-center text-text-secondary">
+      Loading medical note...
+    </div>
+  );
+
+  return (
+    <iframe
+      src={blobUrl}
+      className="w-full min-h-[80vh] bg-white rounded-lg border border-border"
+      // SECURITY: allow-scripts runs the note's JS/CSS. 
+      // Omitting allow-same-origin forces an opaque origin, blocking access to parent DOM/localStorage.
+      sandbox="allow-scripts"
+      title="Secure Medical Note Viewer"
+    />
+  );
+}
