@@ -1,0 +1,54 @@
+name: Sync Notes to Release
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'draft-notes/**/*.html'
+      - 'metadata/**/*.json'
+      - 'scripts/**'
+
+jobs:
+  build-and-sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Manifest
+        run: node scripts/generate-manifest.js
+
+      - name: Commit Manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/manifest.json
+          git commit -m "chore: update manifest [skip ci]" || echo "No manifest changes"
+          git push
+
+      - name: Upload HTML to Release & Clean Drafts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="mbbs-movie-medical-notes-0.0.1"
+          
+          # 1. Ensure release exists
+          gh release view "$TAG" || gh release create "$TAG" --title "Medical Notes v0.0.1" --notes "Auto-synced medical notes"
+          
+          # 2. Upload all HTML files from draft-notes to the release
+          if [ -d "draft-notes" ]; then
+            find draft-notes -name "*.html" -exec gh release upload "$TAG" {} --clobber \;
+            
+            # 3. DELETE HTML files from the repo to keep Git history clean
+            find draft-notes -name "*.html" -delete
+            
+            # 4. Commit the cleanup
+            git add draft-notes/
+            git commit -m "chore: move notes to release, clean draft [skip ci]" || echo "No files to clean"
+            git push
+          fi
